@@ -1,0 +1,18 @@
+{% extends "base.html" %}{% block title %}Pay securely — Himanshu NextGen Academy{% endblock %}{% block content %}
+<section class="container form-page"><div class="form-panel">
+<div class="eyebrow">PAYMENT CHECKOUT</div><h1>Complete your <span class="gradient-text">payment.</span></h1>
+<p class="muted">Item: <strong>{{ lesson.title }}</strong> · {{ 'Complete course access' if item_type == 'course' else ('Video access' if item_type == 'video' else 'PDF notes') }}</p>
+<div class="lesson-tip"><strong>Amount to pay: ₹{{ '%.2f'|format(amount) }}</strong><p>Pay using any UPI app, then enter the UPI transaction/reference ID below. Access unlocks only after the admin verifies the payment.</p></div>
+<div class="admin-panel" style="padding:18px;margin:18px 0;text-align:center">
+<div class="eyebrow">SCAN & PAY</div><h2 style="margin:8px 0">{{ upi_name or 'Himanshu NextGen Academy' }}</h2>
+<p>UPI ID: <strong id="upiText">{{ upi_id }}</strong></p>
+<div id="upiQr" style="display:inline-block;background:#fff;padding:12px;border-radius:12px;min-width:180px;min-height:180px"></div>
+<p><a class="btn btn-primary" id="payNow" href="upi://pay?pa={{ upi_id|urlencode }}&pn={{ upi_name|urlencode }}&am={{ '%.2f'|format(amount) }}&cu=INR&tn={{ (lesson.title ~ ' - ' ~ item_type)|urlencode }}">Open UPI App to Pay ₹{{ '%.2f'|format(amount) }} ↗</a></p>
+<button class="btn btn-outline" type="button" onclick="navigator.clipboard.writeText(document.getElementById('upiText').innerText).then(()=>alert('UPI ID copied'))">Copy UPI ID</button>
+<small style="display:block;margin-top:10px;color:#777">QR generation requires internet access. If it does not appear, use the UPI ID or Open UPI App button.</small>
+</div>
+<form method="post" class="stack-form"><label>UPI / bank transaction reference<input name="transaction_ref" required minlength="4" maxlength="100" placeholder="Enter transaction ID after payment"></label><button class="btn btn-primary btn-large" type="submit">Submit for verification ↗</button></form>
+<p class="auth-switch">Do not submit a reference until you have actually paid. A submitted reference is not proof of payment.</p>
+</div></section>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script><script>document.addEventListener('DOMContentLoaded',function(){var el=document.getElementById('upiQr');if(window.QRCode){new QRCode(el,{text:document.getElementById('payNow').href,width:180,height:180});}else{el.innerHTML='<p style="color:#333">QR unavailable — use UPI ID above</p>';}});</script>
+{% endblock %}

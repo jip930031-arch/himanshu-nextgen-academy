@@ -1,0 +1,8 @@
+<article class="course-card">
+  <a class="course-art art-{{ course.thumbnail }}" href="{{ url_for('course_detail', course_id=course.id) }}">
+    <span class="art-chip">{{ course.category }}</span>
+    {% if course.thumbnail == 'python' %}<div class="art-symbol">Py<span>⌘</span></div>{% elif course.thumbnail == 'web' %}<div class="art-symbol">&lt;<span>/&gt;</span></div>{% elif course.thumbnail == 'english' %}<div class="art-symbol">Aa<span>✦</span></div>{% elif course.thumbnail == 'computer' %}<div class="art-symbol">▣<span>⌁</span></div>{% elif course.thumbnail == 'javascript' %}<div class="art-symbol">JS<span>↗</span></div>{% else %}<div class="art-symbol">▤<span>＋</span></div>{% endif %}
+    <span class="art-orb"></span>
+  </a>
+  <div class="course-card-body"><div class="course-meta"><span>{{ course.level }}</span><span class="price-tag">{% if course.price == 0 %}FREE{% else %}₹{{ "%.0f"|format(course.price) }}{% endif %}</span></div><h3><a href="{{ url_for('course_detail', course_id=course.id) }}">{{ course.title }}</a></h3><p>{{ course.description }}</p><a class="card-link" href="{{ url_for('course_detail', course_id=course.id) }}">View course <span>↗</span></a></div>
+</article>

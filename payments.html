@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+{% block title %}Payments | Himanshu NextGen Academy{% endblock %}
+{% block content %}
+<section class="container section">
+  <span class="eyebrow">ACCOUNT</span>
+  <h1>Payment <span class="gradient-text">History</span></h1>
+  <p>View your video and notes payment requests, their status, and available receipts.</p>
+  {% if orders %}
+  <div class="admin-panel" style="padding:18px;overflow-x:auto">
+    <table style="width:100%;border-collapse:collapse;min-width:560px">
+      <thead><tr><th style="text-align:left;padding:12px;border-bottom:1px solid var(--line)">Item</th><th style="text-align:left;padding:12px;border-bottom:1px solid var(--line)">Type</th><th style="text-align:left;padding:12px;border-bottom:1px solid var(--line)">Amount</th><th style="text-align:left;padding:12px;border-bottom:1px solid var(--line)">Status</th><th style="text-align:left;padding:12px;border-bottom:1px solid var(--line)">Receipt</th></tr></thead>
+      <tbody>{% for order in orders %}<tr><td style="padding:12px;border-bottom:1px solid var(--line)">{{ order.lesson_title }}</td><td style="padding:12px;border-bottom:1px solid var(--line)">{{ 'Video access' if order.item_type == 'video' else 'PDF notes' }}</td><td style="padding:12px;border-bottom:1px solid var(--line)">₹{{ '%.2f'|format(order.amount) }}</td><td style="padding:12px;border-bottom:1px solid var(--line)"><span class="badge">{{ order.status|title }}</span></td><td style="padding:12px;border-bottom:1px solid var(--line)">{% if order.status == 'approved' or order.status == 'paid' %}<a class="text-link" href="{{ url_for('payment_receipt', order_id=order.id) }}">View receipt</a>{% else %}<span style="color:var(--muted)">After approval</span>{% endif %}</td></tr>{% endfor %}</tbody>
+    </table>
+  </div>
+  {% else %}
+  <div class="empty-state" style="padding:28px"><h3>No payments yet</h3><p>Your payment requests will appear here after you purchase video access or PDF notes.</p><a class="btn btn-primary" href="{{ url_for('courses') }}">Explore courses</a></div>
+  {% endif %}
+</section>
+{% endblock %}

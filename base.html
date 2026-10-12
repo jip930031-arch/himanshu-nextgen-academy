@@ -1,0 +1,52 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#101e42">
+  <title>{% block title %}Himanshu NextGen Academy{% endblock %}</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+  <script defer src="{{ url_for('static', filename='js/main.js') }}"></script>
+</head>
+<body>
+<header class="topbar">
+  <a class="brand" href="{{ url_for('index') }}"><span class="brand-mark">H<span>.</span></span><span><span class="brand-name"><span>HIMANSHU</span><b>NEXTGEN ACADEMY</b></span></span></a>
+  <div class="topbar-actions">
+    <button class="theme-toggle" type="button" aria-label="Toggle light and dark theme">☾ Dark</button>
+    <button class="menu-toggle" aria-label="Toggle sidebar" aria-expanded="false">☰</button>
+  </div>
+</header>
+<aside class="side-nav" id="side-nav">
+  <div class="side-label">OVERVIEW</div>
+  <a class="side-link" href="{{ url_for('index') }}"><span>⌂</span> Home</a>
+  <a class="side-link" href="{{ url_for('courses') }}"><span>▦</span> Courses</a>
+  {% if current_user %}
+    <a class="side-link" href="{{ url_for('dashboard') }}"><span>▣</span> Dashboard</a>
+    <a class="side-link" href="{{ url_for('payments') }}"><span>▤</span> Payments</a>
+    {% if current_role == 'admin' %}<a class="side-link" href="{{ url_for('admin_dashboard') }}"><span>⚙</span> Admin Panel</a>{% endif %}
+  {% else %}
+    <a class="side-link" href="{{ url_for('login') }}"><span>↪</span> Log in</a>
+    <a class="side-link" href="{{ url_for('signup') }}"><span>＋</span> Get started</a>
+  {% endif %}
+  <div class="side-bottom">
+    <div class="side-label">SETTINGS</div>
+    {% if current_user %}<a class="side-link logout-link" href="{{ url_for('logout') }}"><span>⇥</span> Logout</a>{% endif %}
+    <div class="side-caption">{% if current_user %}Signed in as {{ current_user.split(' ')[0] }}{% else %}Learn skills. Build your future.{% endif %}</div>
+  </div>
+</aside>
+<main class="page-main">
+  {% with messages = get_flashed_messages(with_categories=true) %}
+    {% if messages %}
+      <div class="flash-wrap">{% for category, message in messages %}<div class="flash flash-{{ category }}">{{ message }}<button class="flash-close" aria-label="Dismiss">×</button></div>{% endfor %}</div>
+    {% endif %}
+  {% endwith %}
+  {% block content %}{% endblock %}
+</main>
+<footer class="footer">
+  <div class="footer-brand"><span class="brand-mark">H<span>.</span></span><div><strong class="footer-brand-name">HIMANSHU<br>NEXTGEN ACADEMY</strong><p>Learn skills. Build your future.</p></div></div>
+  <p>© {{ 2026 }} Himanshu NextGen Academy · Built for curious minds.</p>
+</footer>
+</body>
+</html>

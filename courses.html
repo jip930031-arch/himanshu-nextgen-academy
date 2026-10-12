@@ -1,0 +1,10 @@
+{% extends "base.html" %}
+{% block title %}Explore Courses — Himanshu NextGen Academy{% endblock %}
+{% block content %}
+<section class="page-hero container"><div class="eyebrow">THE COURSE LIBRARY</div><h1>Start with <span class="gradient-text">Computer Basics.</span></h1><p>One beginner-friendly course to start your computer learning journey.</p></section>
+<section class="container catalog">
+<form class="filter-bar" method="get"><div class="search-box"><span>⌕</span><input type="search" name="q" placeholder="Search courses or skills..." value="{{ q }}"></div><select name="category" aria-label="Filter by category"><option value="">All categories</option>{% for c in categories %}<option value="{{ c }}" {% if selected_category == c %}selected{% endif %}>{{ c }}</option>{% endfor %}</select><button class="btn btn-primary" type="submit">Find courses</button></form>
+<div class="catalog-caption"><span><b>{{ courses|length }}</b> courses found</span><span>Learn something useful today ✦</span></div>
+{% if courses %}<div class="course-grid">{% for course in courses %}{% include "_course_card.html" %}{% endfor %}</div>{% else %}<div class="empty-state"><div>⌕</div><h2>No courses found</h2><p>Try another keyword or category.</p><a class="btn btn-outline" href="{{ url_for('courses') }}">Clear filters</a></div>{% endif %}
+</section>
+{% endblock %}
